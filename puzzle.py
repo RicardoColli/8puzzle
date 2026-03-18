@@ -1,5 +1,9 @@
 from collections import deque
+import time 
+from interface import mostrar_interface
 
+#exemplo de sequencia sem solucao: 0 2 4 6 8 1 7 5 3
+#exemplo de funcionamento: 1, 0, 3, 2, 4, 5, 6, 8, 7
 # Estado final desejado
 OBJETIVO = (1,2,3,
             4,5,6,
@@ -12,6 +16,23 @@ MOVIMENTOS = {
     "Esquerda": -1,
     "Direita": 1
 }
+
+
+def validar_entrada(numeros):
+
+    if len(numeros) != 9:
+        print("Erro: é necessário digitar exatos 9 números.")
+        return False
+
+    if any(n < 0 or n > 8 for n in numeros):
+        print("Erro: os números devem estar entre 0 e 8.")
+        return False
+
+    if len(set(numeros)) != 9:
+        print("Erro: os números não podem se repetir.")
+        return False
+
+    return True
 
 def movimentos_validos(pos):
     validos = []
@@ -85,16 +106,28 @@ def imprimir_tabuleiro(estado):
 
 def main():
 
-    entrada = input("Digite o estado inicial (ex: 1 2 3 4 5 6 7 0 8): ")
+    while True:
 
+        entrada = input("Digite o estado inicial (ex: 1 2 3 4 5 6 7 0 8): ")
+
+        try:
+            numeros = list(map(int, entrada.split()))
+        except:
+            print("Erro: digite apenas números.")
+            continue
+
+        if validar_entrada(numeros):
+            break
     numeros = list(map(int, entrada.split()))
-
     estado_inicial = tuple(numeros)
 
     print("\nEstado inicial:")
     imprimir_tabuleiro(estado_inicial)
 
+    inicio = time.time()
     caminho, estados_testados = bfs(estado_inicial)
+    fim = time.time()
+    tempo_total = fim - inicio
 
     if caminho is None:
         print("Não foi encontrada solução.")
@@ -107,7 +140,8 @@ def main():
 
     print("\nNúmero de movimentos:", len(caminho))
     print("Número de estados testados:", estados_testados)
-
+    print(f"Tempo para encontrar solução: {tempo_total:.4f} segundos")
+    mostrar_interface(estado_inicial, caminho)
 
 if __name__ == "__main__":
     main()
