@@ -114,7 +114,7 @@ def aplicar_movimento(estado, movimento):
 
 janela = tk.Tk()
 janela.title("8 Puzzle Solver")
-janela.geometry("380x550")
+janela.geometry("600x600")
 
 titulo = tk.Label(janela, text="8 Puzzle Solver", font=("Arial", 16, "bold"))
 titulo.pack(pady=10)
